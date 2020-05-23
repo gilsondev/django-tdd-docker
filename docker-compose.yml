@@ -1,0 +1,30 @@
+version: '3.7'
+
+services:
+  movies:
+    build: ./backend
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./backend/:/usr/src/app/
+    ports:
+      - 8000:8000
+    env_file:
+      - ./backend/.env
+    environment:
+      - DATABASE_URL=postgres://movies:movies@movies-db:5432/movies_dev
+    depends_on:
+      - movies-db
+
+  movies-db:
+    image: postgres:12-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+    environment: 
+      - POSTGRES_USER=movies
+      - POSTGRES_PASSWORD=movies
+      - POSTGRES_DB=movies_dev
+
+volumes:
+  postgres_data:
