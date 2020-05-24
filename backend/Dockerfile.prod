@@ -5,7 +5,7 @@ WORKDIR /usr/src/app
 
 # set environment variables
 ENV SECRET_KEY THIS_IS_NOT_A_GOOD_SECRET
-ENV DEBUG True
+ENV DEBUG False
 ENV ALLOWED_HOSTS .herokuapp.com
 
 # install psycopg2 dependencies
