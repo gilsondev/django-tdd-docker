@@ -1,0 +1,30 @@
+FROM python:3.8.2-alpine
+
+# set work directory
+WORKDIR /usr/src/app
+
+# set environment variables
+ENV SECRET_KEY THIS_IS_NOT_A_GOOD_SECRET
+ENV DEBUG True
+ENV ALLOWED_HOSTS .herokuapp.com
+
+# install psycopg2 dependencies
+RUN apk update && apk add postgresql-dev gcc python3-dev musl-dev libffi-dev openssl-dev
+
+# install dependencies
+RUN pip install --upgrade pip
+COPY ./requirements.txt /usr/src/app/requirements.txt
+RUN pip install -r requirements.txt
+
+# copy project
+COPY . /usr/src/app/
+
+# collect static files
+RUN python manage.py collectstatic --noinput
+
+# add and run as non-root user
+RUN adduser -D myuser
+USER myuser
+
+# run gunicorn
+CMD gunicorn drf_project.wsgi:application --bind 0.0.0.0:$PORT
