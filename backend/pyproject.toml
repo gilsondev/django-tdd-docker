@@ -6,7 +6,7 @@ authors = ["Gilson Filho <me@gilsondev.in>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-django = "^3.0.6"
+django = "^3.0.14"
 djangorestframework = "^3.11.0"
 python-decouple = "^3.3"
 dj-database-url = "^0.5.0"
